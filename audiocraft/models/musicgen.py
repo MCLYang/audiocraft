@@ -87,6 +87,7 @@ class MusicGen:
 
         cache_dir = os.environ.get('MUSICGEN_ROOT', None)
         compression_model = load_compression_model(name, device=device, cache_dir=cache_dir)
+        print("cache_dir ", cache_dir)
         lm = load_lm_model(name, device=device, cache_dir=cache_dir)
 
         return MusicGen(name, compression_model, lm)

@@ -1,0 +1,9 @@
+Collecting torch
+  Using cached torch-1.13.1-cp37-cp37m-manylinux1_x86_64.whl (887.5 MB)
+Collecting typing-extensions (from torch)
+  Downloading typing_extensions-4.6.3-py3-none-any.whl (31 kB)
+Collecting nvidia-cuda-runtime-cu11==11.7.99 (from torch)
+  Downloading nvidia_cuda_runtime_cu11-11.7.99-py3-none-manylinux1_x86_64.whl (849 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 849.3/849.3 kB 1.3 MB/s eta 0:00:00
+Collecting nvidia-cudnn-cu11==8.5.0.96 (from torch)
+  Downloading nvidia_cudnn_cu11-8.5.0.96-2-py3-none-manylinux1_x86_64.whl (557.1 MB)

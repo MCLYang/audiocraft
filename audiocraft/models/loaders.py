@@ -23,6 +23,7 @@ from pathlib import Path
 from huggingface_hub import hf_hub_download
 import typing as tp
 import os
+from pathlib import Path
 
 from omegaconf import OmegaConf
 import torch
@@ -46,6 +47,8 @@ def _get_state_dict(
 ):
     # Return the state dict either from a file or url
     file_or_url_or_id = str(file_or_url_or_id)
+    print("file_or_url_or_id ", file_or_url_or_id)
+
     assert isinstance(file_or_url_or_id, str)
 
     if os.path.isfile(file_or_url_or_id):
@@ -58,15 +61,21 @@ def _get_state_dict(
         assert filename is not None, "filename needs to be defined if using HF checkpoints"
 
         repo_id = HF_MODEL_CHECKPOINTS_MAP[file_or_url_or_id]
-        file = hf_hub_download(repo_id=repo_id, filename=filename, cache_dir=cache_dir)
+        print("cache_dir", cache_dir)
+        print("repo_id", repo_id)
+        print("filename", filename)
+        file = hf_hub_download(
+            repo_id=repo_id, filename=filename, cache_dir=cache_dir)
         return torch.load(file, map_location=device)
 
     else:
-        raise ValueError(f"{file_or_url_or_id} is not a valid name, path or link that can be loaded.")
+        raise ValueError(
+            f"{file_or_url_or_id} is not a valid name, path or link that can be loaded.")
 
 
 def load_compression_model(file_or_url_or_id: tp.Union[Path, str], device='cpu', cache_dir: tp.Optional[str] = None):
-    pkg = _get_state_dict(file_or_url_or_id, filename="compression_state_dict.bin", cache_dir=cache_dir)
+    pkg = _get_state_dict(
+        file_or_url_or_id, filename="compression_state_dict.bin", cache_dir=cache_dir)
     cfg = OmegaConf.create(pkg['xp.cfg'])
     cfg.device = str(device)
     model = builders.get_compression_model(cfg)
@@ -76,7 +85,8 @@ def load_compression_model(file_or_url_or_id: tp.Union[Path, str], device='cpu',
 
 
 def load_lm_model(file_or_url_or_id: tp.Union[Path, str], device='cpu', cache_dir: tp.Optional[str] = None):
-    pkg = _get_state_dict(file_or_url_or_id, filename="state_dict.bin", cache_dir=cache_dir)
+    pkg = _get_state_dict(
+        file_or_url_or_id, filename="state_dict.bin", cache_dir=cache_dir)
     cfg = OmegaConf.create(pkg['xp.cfg'])
     cfg.device = str(device)
     if cfg.device == 'cpu':
